@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios"; // Import Axios
+import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthProvider";
 
 const Signup = () => {
+  const [authUser, setAuthUser] = useAuth();
+  var navigate = useNavigate();
   // State to store form data
   const [formData, setFormData] = useState({
     userName: "",
@@ -29,11 +34,16 @@ const Signup = () => {
 
       // Handle success
       if (response.status === 200) {
+        toast.success("User Successfully created")
         console.log("Signup successful:", response.data);
         // Optionally, redirect the user or show success message
+        localStorage.setItem('email', formData.email);
+        setAuthUser(formData.email);
+        navigate('/todo/todolist');
       }
     } catch (error) {
       // Handle error
+      toast.error("fail to create user")
       console.error("Signup failed:", error.response ? error.response.data : error.message);
     }
   };
@@ -100,12 +110,12 @@ const Signup = () => {
             >
               Sign Up
             </button>
-            <a
-              className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-              href="/todo/login"
+            <Link
+            to="/todo/login"
+            className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
             >
-              Already have an account? Log in
-            </a>
+              Already have an account? Login
+            </Link>
           </div>
         </form>
       </div>

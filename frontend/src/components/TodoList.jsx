@@ -41,7 +41,19 @@ const TodoList = () => {
     const fetchData = () => {
       fetch("http://127.0.0.1:3005/")
         .then((res) => res.json())
-        .then((res) => setData(res[0]))
+        .then((res) => {
+          // console.log(res);
+          var email = localStorage.getItem('email');
+          // console.log(email);
+          res.forEach(user => {
+            // console.log(user);
+            if(user.userId == email){
+              // console.log("user is : " , user);
+              setData(user);
+              // console.log("data",data);
+            }
+          });
+        })
         .catch((error) => console.log("error in fetching ", error));
     };
 
@@ -69,7 +81,7 @@ const TodoList = () => {
 
         <div className="flex justify-center">
           <div className="bg-blue-500 w-[calc(75vh-10px)] py-2 h-[64vh] overflow-hidden overflow-y-scroll">
-            {data != undefined && <TodoCard data={data} setData={setData} />}
+            {data != undefined && data != null && <TodoCard data={data} setData={setData} />}
           </div>
         </div>
       </div>
