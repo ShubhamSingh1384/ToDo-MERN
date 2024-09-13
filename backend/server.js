@@ -1,12 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
+var cookieParser = require('cookie-parser')
 const userTodo = require("./model/Task.Model");
 const userModel = require("./model/User.Model");
 const cors = require("cors");
 
 const app = express();
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/ToDoApp")
@@ -17,8 +20,6 @@ mongoose
     console.log("failed to connected ", error);
   });
 
-app.use(express.json());
-app.use(cors());
 
 app.get("/", (req, res) => {
   userTodo
@@ -170,13 +171,11 @@ app.post("/todo/login", (req, res) => {
     .then((data) => {
         // console.log(data.userName);
       if (data != null && data.password == password) {
-        res
-          .status(200)
-          .send({ message: "User successfully LogedIn", success: true, name:data.userName });
+        res.cookie('user', data);
+        res.status(200).send({ message: "User successfully LogedIn", success: true, name:data.userName });
+
       } else if(data != null && data.password != password) {
-        res
-          .status(400)
-          .send({ message: "incorrect credential", success: false });
+        res.status(400).send({ message: "incorrect credential", success: false });
       }
     })
     .catch((error) =>

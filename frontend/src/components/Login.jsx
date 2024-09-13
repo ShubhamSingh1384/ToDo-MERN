@@ -2,8 +2,10 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import {toast} from 'react-hot-toast'
+import { useAuth } from '../context/AuthProvider'
 
 const Login = () => {
+    const [authUser, setAuthUser] = useAuth();
     const [islogin , setIslogin] = useState(false);
     const [formData , setFormData] = useState({
         email:"",
@@ -30,7 +32,7 @@ const Login = () => {
                 toast.success(`${response.data.name} you have successfully logedIn`);
                 console.log(response.data.message);
                 localStorage.setItem('email', formData.email);
-                // setAuthUser(formData.email);
+                setAuthUser(formData.email);
                 // setIslogin(true);
                 navigate('/todo/todolist');
                 
