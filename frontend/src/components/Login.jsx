@@ -27,7 +27,7 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await axios.post("http://localhost:3005/todo/login", formData);
-            // console.log(response.status);
+            console.log(response.status);
             if(response.status == 200){
                 toast.success(`${response.data.name} you have successfully logedIn`);
                 console.log(response.data.message);
@@ -37,11 +37,12 @@ const Login = () => {
                 navigate('/todo/todolist');
                 
             }
-            else if(response.status == 400){
-                toast.error("incorrect email or password")
+            else{
+                toast.error("incorrect email or password",error)
                 console.log("incorrect email or password");
             }
         } catch (error) {
+
             toast.error("error in login")
             console.log("error in login : " ,error);
         }

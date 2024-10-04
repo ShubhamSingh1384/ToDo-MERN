@@ -30,8 +30,8 @@ const Signup = () => {
     try {
       // Send a POST request to the backend using Axios
       console.log(formData);
+      console.log("response status : ")
       const response = await axios.post("http://localhost:3005/todo/signup", formData);
-
       // Handle success
       if (response.status === 200) {
         toast.success("User Successfully created")
